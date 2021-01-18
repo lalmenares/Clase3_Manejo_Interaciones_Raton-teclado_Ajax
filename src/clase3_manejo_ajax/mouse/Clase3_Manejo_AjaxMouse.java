@@ -13,11 +13,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-
 /**
  *
  * @author liudmila
@@ -27,14 +26,13 @@ public class Clase3_Manejo_AjaxMouse {
 
     /**
      * @param args the command line arguments
-     */
-    public static void main(String[] args) throws InterruptedException {
-        //Posicionando el cursor sobre un elementos de la web sin dar clic.
-        //Precondiciones
-        System.setProperty("webdriver.gecko.driver", "./src/drivers/geckodriver.exe");
-        WebDriver driver = new FirefoxDriver(); 
+     */public static void main(String[] args) throws InterruptedException {
+
+ //Precondiciones
+		 System.setProperty("webdriver.chrome.driver", "./src/drivers/chromedriver.exe");
+	     WebDriver driver = new ChromeDriver(); 
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        //Accediendo a la p√°gina
+        //Accediendo a la p·gina
         //Vamos a utilizar este recurso donde vamos a poder experimentar con un objeto dinamico
         driver.get("https://www.amazon.com/");
          //Maximizando la pantalla
@@ -44,13 +42,13 @@ public class Clase3_Manejo_AjaxMouse {
        // por lo que obtiene sus atributos y funcionalidades,
        //Actions nos permite realizar una serie de eventos con el mraton sobre los objetos.
        //Inicializamos el objeto de la clase Actions
-       Actions acciones = new Actions(driver);
+       final Actions acciones = new Actions(driver);
        //Ahora contruimos toda la operacion
        //Primero debemos indicar la accion que queremos realizar con el raton
        //segundo le decimos hacia que objeto de la web vamos a estar haciendo esa operaci'on
        //Luego contruimos la accion con Build();
        //Luego llevamos a cabo la accion con Performance();
-       acciones.moveToElement(driver.findElement(By.xpath("/html/body/div[1]/header/div/div[2]/div[2]/div/a[2]/span[1]")))
+       acciones.moveToElement(driver.findElement(By.xpath("//*[@id=\"nav-link-accountList\"]")))
                .build().perform();
        //ahora intentamos hacer click sobre un elemento de ls lista desplegable utilizando el FluentWait
        
@@ -60,14 +58,14 @@ public class Clase3_Manejo_AjaxMouse {
                .ignoring(NoSuchElementException.class);//Especificamos que no haga caso a las excepciones mientras se ejecuta.
        WebElement objeto_dinamico = tiempo_espera.until(new Function<WebDriver, WebElement>() {
         public WebElement apply(WebDriver driver) {
-            if (driver.findElement(By.xpath("//span[text()='Create a List']")).isDisplayed())
+            if (driver.findElement(By.xpath("//*[@id=\"nav-al-wishlist\"]/a[1]/span")).isDisplayed())
             {
                 //aqui vemos como podemos utilizar dos tipos de conceptos:
                 //el de manejo de tiempo y el de manejo de elementos por medio del maus y el teclado
-                acciones.moveToElement(driver.findElement(By.xpath("//span[text()='Create a List']")))
+            	acciones.moveToElement(driver.findElement(By.xpath("//*[@id=\"nav-al-wishlist\"]/a[1]/span")))
                .click().build().perform();
-                System.out.println(driver.findElement(By.xpath("//span[text()='Create a List']")).getText());
-                return driver.findElement(By.xpath("//span[text()='Create a List']"));
+                System.out.println(driver.findElement(By.xpath("//*[@id=\"nav-al-wishlist\"]/a[1]/span")).getText());
+                return driver.findElement(By.xpath("//*[@id=\"nav-al-wishlist\"]/a[1]/span"));
             }
             else
             {
